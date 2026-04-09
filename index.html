@@ -618,7 +618,7 @@ function loadVersionTree() {
     const li = document.createElement('li');
     const label = document.createElement('div');
     label.className = 'tree-label folder';
-    label.innerHTML = `<span class="tree-icon">📁</span> ${major}`;
+    label.innerHTML = `<span class="tree-icon"></span> ${major}`;
     const children = document.createElement('ul');
     children.className = 'tree-children tree-node';
     label.addEventListener('click', () => {
@@ -634,7 +634,7 @@ function loadVersionTree() {
       const subLi = document.createElement('li');
       const subLabel = document.createElement('div');
       subLabel.className = 'tree-label folder';
-      subLabel.innerHTML = `<span class="tree-icon">📂</span> ${minor}`;
+      subLabel.innerHTML = `<span class="tree-icon"></span> ${minor}`;
       const subChildren = document.createElement('ul');
       subChildren.className = 'tree-children tree-node';
       subLabel.addEventListener('click', () => {
@@ -649,7 +649,7 @@ function loadVersionTree() {
           const fLabel = document.createElement('div');
           fLabel.className = 'tree-label file';
           const name = v.file.replace('.html', '');
-          fLabel.innerHTML = `<span class="tree-icon">📄</span> <a href="versions/${major}/${minor}/${v.file}" target="_blank">${name}</a>`;
+          fLabel.innerHTML = `<span class="tree-icon"></span> <a href="versions/${major}/${minor}/${v.file}" target="_blank">${name}</a>`;
           fLi.appendChild(fLabel);
           subChildren.appendChild(fLi);
         });
