@@ -145,7 +145,7 @@
   }
   #banner .banner-grid {
     position: absolute; inset: 0;
-    background-image: 
+    background-image:
       linear-gradient(rgba(61,220,132,0.06) 1px, transparent 1px),
       linear-gradient(90deg, rgba(61,220,132,0.06) 1px, transparent 1px);
     background-size: 40px 40px;
@@ -287,7 +287,6 @@
     fill: var(--surface);
     stroke: var(--border2);
     stroke-width: 1.5;
-    rx: 8;
     transition: all var(--transition);
   }
   .node-group:hover .node-rect { stroke: var(--accent); fill: var(--surface2); }
@@ -367,7 +366,7 @@
   .news-card:nth-child(4) { animation-delay: 0.15s; }
 </style>
 </head>
-<body data-theme="dark">
+<body>
 
 <!-- TOPBAR -->
 <header id="topbar">
@@ -405,7 +404,6 @@
       <p>Stay up to date with the latest EarthRegions updates</p>
     </div>
     <div class="news-grid" id="news-container">
-      <!-- News cards injected here, add more by duplicating .news-card below -->
       <div class="news-card">
         <span class="tag tag-new">New</span>
         <h3>EarthRegions project launched!</h3>
@@ -464,47 +462,48 @@
       <p>The minds behind EarthRegions</p>
     </div>
     <div id="team-map">
-      <svg id="team-svg" viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-            <circle cx="3" cy="3" r="1.5" fill="rgba(80,160,255,0.4)"/>
-          </marker>
-        </defs>
-        <!-- Lines -->
-        <!-- EarthRegions → Matrix.prime -->
-        <line class="tree-line" x1="450" y1="105" x2="250" y2="210"/>
-        <!-- EarthRegions → Chill0wl -->
-        <!--<line class="tree-line" x1="450" y1="105" x2="650" y2="210"/>-->
-        <!-- Matrix.prime → Ragafeller -->
-        <line class="tree-line" x1="250" y1="265" x2="250" y2="350"/>
+      <svg id="team-svg" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
 
-        <!-- Node: EarthRegions (top center) -->
+        <!-- Lines: K0rd → 3 columns -->
+        <line class="tree-line" x1="450" y1="95" x2="180" y2="210"/>
+        <line class="tree-line" x1="450" y1="95" x2="450" y2="210"/>
+        <line class="tree-line" x1="450" y1="95" x2="720" y2="210"/>
+        <!-- Matrix.prime → Ragafeller -->
+        <line class="tree-line" x1="180" y1="268" x2="180" y2="360"/>
+
+        <!-- Node: K0rd (top center) -->
         <g class="node-group node-main" data-tooltip="Game Designer" transform="translate(450,60)">
           <rect class="node-rect" x="-100" y="-30" width="200" height="60" rx="8"/>
           <text class="node-name" y="-6">K0rd</text>
           <text class="node-role" y="12">Game Designer</text>
         </g>
 
-        <!-- Node: Matrix.prime -->
-        <g class="node-group" data-tooltip="Main 3D Artist" transform="translate(250,237)">
+        <!-- LEFT: Artists -->
+        <g class="node-group" data-tooltip="Main 3D Artist" transform="translate(180,237)">
           <rect class="node-rect" x="-90" y="-30" width="180" height="60" rx="8"/>
           <text class="node-name" y="-6">Matrix.prime</text>
           <text class="node-role" y="12">Main 3D Artist</text>
         </g>
-
-        <!-- Node: Chill0wl -->
-        <!--<g class="node-group" data-tooltip="Main Unity Programmer" transform="translate(650,237)">
-          <rect class="node-rect" x="-90" y="-30" width="180" height="60" rx="8"/>
-          <text class="node-name" y="-6">Chill0wl</text>
-          <text class="node-role" y="12">Main Unity Programmer</text>
-        </g>-->
-
-        <!-- Node: Ragafeller -->
-        <g class="node-group" data-tooltip="3D Artist" transform="translate(250,380)">
+        <g class="node-group" data-tooltip="3D Artist" transform="translate(180,390)">
           <rect class="node-rect" x="-85" y="-28" width="170" height="56" rx="8"/>
           <text class="node-name" y="-5">Ragafeller</text>
           <text class="node-role" y="13">3D Artist</text>
         </g>
+
+        <!-- CENTER: Programmers -->
+        <g class="node-group" data-tooltip="Main Unity Programmer" transform="translate(450,237)">
+          <rect class="node-rect" x="-90" y="-30" width="180" height="60" rx="8"/>
+          <text class="node-name" y="-6">Chill0wl</text>
+          <text class="node-role" y="12">Main Unity Programmer</text>
+        </g>
+
+        <!-- RIGHT: Game Tester / Media -->
+        <g class="node-group" data-tooltip="Game Tester / Media" transform="translate(720,237)">
+          <rect class="node-rect" x="-90" y="-30" width="180" height="60" rx="8"/>
+          <text class="node-name" y="-6">Mediala</text>
+          <text class="node-role" y="12">Game Tester / Media</text>
+        </g>
+
       </svg>
       <div class="tooltip" id="team-tooltip"></div>
     </div>
@@ -530,6 +529,32 @@
 </footer>
 
 <script>
+/* ── COOKIE HELPERS ── */
+function setCookie(name, value, days) {
+  const d = new Date();
+  d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+  document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/';
+}
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? match[2] : null;
+}
+
+/* ── THEME INIT (from cookie, default dark) ── */
+const savedTheme = getCookie('er_theme') || 'dark';
+document.body.setAttribute('data-theme', savedTheme);
+document.getElementById('theme-label').textContent = savedTheme === 'dark' ? 'Dark' : 'Light';
+
+/* ── THEME TOGGLE ── */
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const body = document.body;
+  const isDark = body.getAttribute('data-theme') === 'dark';
+  const newTheme = isDark ? 'light' : 'dark';
+  body.setAttribute('data-theme', newTheme);
+  document.getElementById('theme-label').textContent = isDark ? 'Light' : 'Dark';
+  setCookie('er_theme', newTheme, 365);
+});
+
 /* ── PAGE SWITCHING ── */
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -540,17 +565,6 @@ function showPage(id) {
   navLinks[order.indexOf(id)]?.classList.add('active');
   if (id === 'versions') loadVersionTree();
 }
-
-/* ── THEME TOGGLE ── */
-document.getElementById('themeToggle').addEventListener('click', () => {
-  const body = document.body;
-  const isDark = body.getAttribute('data-theme') === 'dark';
-  body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  document.getElementById('theme-label').textContent = isDark ? 'Light' : 'Dark';
-  if (document.getElementById('page-team').classList.contains('active')) {
-    setTimeout(updateTeamColors, 50);
-  }
-});
 
 /* ── VERSION TREE ── */
 /*
@@ -600,7 +614,6 @@ function loadVersionTree() {
   const container = document.getElementById('version-tree');
   container.innerHTML = '';
 
-  // Filter to only visible items
   const visibleMajors = Object.keys(VERSIONS_DATA).filter(major => {
     return Object.keys(VERSIONS_DATA[major]).some(minor =>
       VERSIONS_DATA[major][minor].some(v => !v.hidden)
@@ -688,24 +701,12 @@ document.querySelectorAll('.node-group').forEach(node => {
   });
 });
 
-function updateTeamColors() {
-  const isDark = document.body.getAttribute('data-theme') === 'dark';
-  document.querySelectorAll('.node-name').forEach(el => {
-    el.style.fill = '';
-  });
-  document.querySelectorAll('.node-role').forEach(el => {
-    el.style.fill = '';
-  });
-}
-
 /* ── INIT: show banner fallback if image fails ── */
 const bannerImg = document.querySelector('#banner img');
 if (bannerImg && bannerImg.complete && bannerImg.naturalWidth === 0) {
   bannerImg.style.display = 'none';
   document.getElementById('banner-fallback').style.display = 'flex';
 }
-
-
 </script>
 </body>
 </html>
