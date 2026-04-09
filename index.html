@@ -278,25 +278,28 @@
   /* TEAM MINDMAP */
   #team-map {
     width: 100%;
-    height: 500px;
     position: relative;
   }
-  #team-map svg { width: 100%; height: 100%; overflow: visible; }
-  .node-group { cursor: pointer; }
+  #team-map svg { width: 100%; overflow: visible; }
+
+  /* Node styles */
+  .node-group { cursor: default; }
   .node-rect {
     fill: var(--surface);
     stroke: var(--border2);
     stroke-width: 1.5;
-    transition: all var(--transition);
+    transition: stroke var(--transition), fill var(--transition);
   }
-  .node-group:hover .node-rect { stroke: var(--accent); fill: var(--surface2); }
+  .node-group.clickable { cursor: pointer; }
+  .node-group.clickable:hover .node-rect { stroke: var(--accent); fill: var(--surface2); }
+
   .node-name {
     font-family: var(--font-head);
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     fill: var(--text);
     text-anchor: middle;
-    dominant-baseline: middle;
+    dominant-baseline: central;
     letter-spacing: 1px;
   }
   .node-role {
@@ -304,12 +307,52 @@
     font-size: 11px;
     fill: var(--text3);
     text-anchor: middle;
-    dominant-baseline: middle;
-    letter-spacing: 0.5px;
+    dominant-baseline: central;
   }
-  .node-main .node-rect { stroke: var(--accent); stroke-width: 2; }
-  .node-main .node-name { fill: var(--accent); font-size: 17px; }
-  .tree-line { stroke: var(--border2); stroke-width: 1.5; fill: none; }
+
+  /* Main node (K0rd) */
+  .node-main .node-rect {
+    stroke: var(--accent);
+    stroke-width: 2;
+  }
+  .node-main .node-name { fill: var(--accent); font-size: 18px; }
+
+  /* Column accent colors */
+  .node-programmer .node-rect { stroke: rgba(150,100,255,0.5); }
+  .node-programmer .node-name { fill: #c0a0ff; }
+  .node-artist .node-rect { stroke: rgba(255,140,80,0.5); }
+  .node-artist .node-name { fill: #ffb080; }
+  .node-media .node-rect { stroke: rgba(80,180,255,0.5); }
+  .node-media .node-name { fill: #80c8ff; }
+
+  /* TBA node */
+  .node-tba .node-rect {
+    fill: transparent;
+    stroke: var(--border);
+    stroke-dasharray: 5 4;
+    stroke-width: 1;
+  }
+  .node-tba .node-name { fill: var(--text3); font-size: 14px; }
+
+  /* Column label */
+  .col-label {
+    font-family: var(--font-head);
+    font-size: 11px;
+    letter-spacing: 2px;
+    fill: var(--text3);
+    text-anchor: middle;
+    dominant-baseline: central;
+    text-transform: uppercase;
+  }
+
+  /* Tree lines */
+  .tree-line {
+    stroke: var(--border2);
+    stroke-width: 1.5;
+    fill: none;
+  }
+
+  /* Tooltip */
   .tooltip {
     position: absolute;
     background: var(--surface2);
@@ -462,46 +505,62 @@
       <p>The minds behind EarthRegions</p>
     </div>
     <div id="team-map">
-      <svg id="team-svg" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+      <svg id="team-svg" viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg">
 
         <!-- Lines: K0rd → 3 columns -->
-        <line class="tree-line" x1="450" y1="95" x2="180" y2="210"/>
-        <!--<line class="tree-line" x1="450" y1="95" x2="450" y2="210"/>-->
-        <line class="tree-line" x1="450" y1="95" x2="720" y2="210"/>
-        <!-- Matrix.prime → Ragafeller -->
-        <line class="tree-line" x1="180" y1="268" x2="180" y2="360"/>
+        <line class="tree-line" x1="450" y1="95" x2="150" y2="200"/>
+        <line class="tree-line" x1="450" y1="95" x2="450" y2="200"/>
+        <line class="tree-line" x1="450" y1="95" x2="750" y2="200"/>
 
-        <!-- Node: K0rd (top center) -->
-        <g class="node-group node-main" data-tooltip="Game Designer" transform="translate(450,60)">
-          <rect class="node-rect" x="-100" y="-30" width="200" height="60" rx="8"/>
-          <text class="node-name" y="-6">K0rd</text>
-          <text class="node-role" y="12">Game Designer / Project Owner</text>
+        <!-- Artists: Matrix.prime → Ragafeller -->
+        <line class="tree-line" x1="450" y1="268" x2="450" y2="355"/>
+
+        <!-- Media: Mediala → Ragafeller -->
+        <line class="tree-line" x1="750" y1="268" x2="490" y2="355"/>
+
+        <!-- Column labels -->
+        <text class="col-label" x="150" y="188">Programmers</text>
+        <text class="col-label" x="450" y="188">Artists</text>
+        <text class="col-label" x="750" y="188">Media</text>
+
+        <!-- ── K0rd (top center) ── -->
+        <g class="node-group node-main">
+          <rect class="node-rect" x="340" y="28" width="220" height="62" rx="8"/>
+          <text class="node-name" x="450" y="53">K0rd</text>
+          <text class="node-role" x="450" y="73">Game Designer / Project Owner</text>
         </g>
 
-        <!-- LEFT: Artists -->
-        <g class="node-group" data-tooltip="Main 3D Artist" transform="translate(180,237)">
-          <rect class="node-rect" x="-90" y="-30" width="180" height="60" rx="8"/>
-          <text class="node-name" y="-6">Matrix.prime</text>
-          <text class="node-role" y="12">Main 3D Artist</text>
-        </g>
-        <g class="node-group" data-tooltip="3D Artist" transform="translate(180,390)">
-          <rect class="node-rect" x="-85" y="-28" width="170" height="56" rx="8"/>
-          <text class="node-name" y="-5">Ragafeller</text>
-          <text class="node-role" y="13">3D Artist</text>
-        </g>
-
-        <!-- CENTER: Programmers -->
-        <!--<g class="node-group" data-tooltip="Main Unity Programmer" transform="translate(450,237)">
-          <rect class="node-rect" x="-90" y="-30" width="180" height="60" rx="8"/>
-          <text class="node-name" y="-6">Chill0wl</text>
-          <text class="node-role" y="12">Main Unity Programmer</text>
+        <!-- ── LEFT: Programmers ── -->
+        <!--
+          Chill0wl — skrytý, odkomentuj až bude čas:
+          <g class="node-group node-programmer clickable" data-tooltip="Main Unity Programmer">
+            <rect class="node-rect" x="55" y="210" width="190" height="58" rx="8"/>
+            <text class="node-name" x="150" y="234">Chill0wl</text>
+            <text class="node-role" x="150" y="254">Main Unity Programmer</text>
+          </g>
+        -->
+        <g class="node-group node-tba">
+          <rect class="node-rect" x="65" y="215" width="170" height="50" rx="8"/>
+          <text class="node-name" x="150" y="242">TBA</text>
         </g>
 
-        <!-- RIGHT: Media -->
-        <g class="node-group" data-tooltip="Game Tester / Media" transform="translate(720,237)">
-          <rect class="node-rect" x="-90" y="-30" width="180" height="60" rx="8"/>
-          <text class="node-name" y="-6">Mediala</text>
-          <text class="node-role" y="12">Media / Left wing control</text>
+        <!-- ── CENTER: Artists ── -->
+        <g class="node-group node-artist clickable" data-tooltip="Main 3D Artist">
+          <rect class="node-rect" x="355" y="210" width="190" height="58" rx="8"/>
+          <text class="node-name" x="450" y="234">Matrix.prime</text>
+          <text class="node-role" x="450" y="254">Main 3D Artist</text>
+        </g>
+        <g class="node-group node-artist clickable" data-tooltip="3D Artist">
+          <rect class="node-rect" x="360" y="355" width="180" height="55" rx="8"/>
+          <text class="node-name" x="450" y="378">Ragafeller</text>
+          <text class="node-role" x="450" y="397">3D Artist</text>
+        </g>
+
+        <!-- ── RIGHT: Media ── -->
+        <g class="node-group node-media clickable" data-tooltip="Media / Left wing control">
+          <rect class="node-rect" x="655" y="210" width="190" height="58" rx="8"/>
+          <text class="node-name" x="750" y="234">Mediala</text>
+          <text class="node-role" x="750" y="254">Media / Left wing control</text>
         </g>
 
       </svg>
@@ -683,8 +742,8 @@ function loadVersionTree() {
 
 /* ── TEAM TOOLTIP ── */
 const tooltip = document.getElementById('team-tooltip');
-document.querySelectorAll('.node-group').forEach(node => {
-  node.addEventListener('mouseenter', (e) => {
+document.querySelectorAll('.node-group.clickable').forEach(node => {
+  node.addEventListener('mouseenter', () => {
     const text = node.getAttribute('data-tooltip');
     if (!text) return;
     tooltip.textContent = text;
